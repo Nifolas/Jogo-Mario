@@ -1,0 +1,123 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+.game-board {
+    width: 100%;
+    height: 100vh;
+    border-bottom: 50px solid green;
+    position: fixed;
+    overflow: hidden;
+    background: linear-gradient(lightblue, #E0F6FF);
+    transition: background 1.5s ease-in-out;
+}
+
+/* --- MODO NOTURNO --- */
+.game-board.night {
+    background: linear-gradient(#0a0a2a, #1a1a4a);
+    border-bottom-color: #004d00;
+}
+.game-board.night .clouds { filter: brightness(0.5) grayscale(1); }
+/* NOVA REGRA PARA O MODO NOTURNO: ESCURECER OS ARBUSTOS */
+.game-board.night .bushes { filter: brightness(0.4) saturate(0.8); }
+.game-board.night .score { color: white; }
+
+.clouds {
+    width: 500px;
+    position: absolute;
+    animation: clouds-animation 20s infinite linear;
+}
+
+/* --- NOVAS REGRAS PARA OS ARBUSTOS --- */
+.bushes {
+    width: 1000px; /* Aumentamos a largura para caber mais repetições */
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    opacity: 0.9;
+    /* Reduzimos de 12s para 6s: eles passam o dobro de vezes */
+    animation: bushes-animation 6s infinite linear; 
+}
+
+.obstacle {
+    position: absolute;
+    bottom: 0;
+    width: 60px;
+    right: -80px;
+    z-index: 2;
+}
+
+.obstacle-moving {
+    animation: obstacle-animation var(--speed, 1.5s) infinite linear;
+}
+
+.obstacle-air {
+    bottom: 60px; 
+    width: 80px;  
+}
+
+.mario {
+    width: 130px;
+    position: absolute;
+    bottom: 0;
+    z-index: 3;
+    transition: width 0.1s;
+}
+
+.mario.duck { width: 80px; }
+
+.jump { animation: jump 500ms ease-out; }
+
+.score {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 50px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: #333;
+    z-index: 10;
+}
+
+.game-over {
+    visibility: hidden;
+    display: flex;
+    position: fixed;
+    inset: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 20;
+}
+
+.restart {
+    height: 60px;
+    width: 300px;
+    border-radius: 10px;
+    border: none;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #e74c3c;
+    color: white;
+    cursor: pointer;
+}
+
+@keyframes obstacle-animation {
+    from { right: -80px; }
+    to { right: 100%; }
+}
+
+@keyframes jump {
+    0%, 100% { bottom: 0; }
+    40%, 60% { bottom: 180px; }
+}
+
+@keyframes clouds-animation {
+    from { right: -550px; }
+    to { right: 100%; }
+}
+
+/* --- NOVA ANIMAÇÃO PARA OS ARBUSTOS --- */
+/* Ajuste na animação para compensar a largura maior */
+@keyframes bushes-animation {
+    from { right: -1000px; } 
+    to { right: 100%; }
+}
